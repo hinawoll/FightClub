@@ -23,6 +23,8 @@ public:
     void startBattle();
     void showAllCharacters() const;
     void showStatistics() const;
+
+    bool handleInputError() const;
 };
 
 

@@ -18,11 +18,20 @@ void GameManager::startGame() {
     int choice = 0;
     while (choice != 5) {
         showMenu();
-        cin >> choice;
 
-        while (choice < 1 || choice > 5) {
-            cout << "Invalid input. Please enter a number from 1 to 5: ";
+        while (true) {
             cin >> choice;
+
+            if (handleInputError()) {//prüft, ob der Typ der eingabe gültig ist
+                continue;
+            }
+
+            if (choice < 1 || choice > 5) {
+                cout << "Invalid input. Please enter a number from 1 to 5: ";
+                continue;
+            }
+
+            break;
         }
 
         if (choice == 1) {
@@ -77,20 +86,42 @@ void GameManager::createCharacter() {
 
     // die erste Skill auswählen
     cout << "Choose first skill: ";
-    cin >> choice1;
-
-    while (choice1 < 1 || choice1 > skillCount) {
-        cout << "Invalid input. Choose again: ";
+    while (true) {
         cin >> choice1;
+
+        if (handleInputError()) {//prüft, ob der Typ der eingabe gültig ist
+            continue;
+        }
+
+        if (choice1 < 1 || choice1 > skillCount) {
+            cout << "Invalid input. Choose again: ";
+            continue;
+        }
+        break;
     }
+
 
     // die zweite Skill auswählen
     cout << "Choose second skill: ";
-    cin >> choice2;
 
-    while (choice2 < 1 || choice2 > skillCount) {
-        cout << "Invalid input. Choose again: ";
+    while (true) {
         cin >> choice2;
+
+        if (handleInputError()) {//prüft, ob der Typ der eingabe gültig ist
+            continue;
+        }
+
+        if (choice2 < 1 || choice2 > skillCount) {
+            cout << "Invalid input. Choose again: ";
+            continue;
+        }
+
+        if (choice2 == choice1) {
+            cout << "Choose a different skill: ";
+            continue;
+        }
+
+        break;
     }
 
     // ein Character erstellen
@@ -112,11 +143,19 @@ int GameManager::selectCharacter() const{
     showAllCharacters();
 
     cout << "Choose character: ";
-    cin >> choice;
-
-    while (choice < 1 || choice > characterCount) {
-        cout << "Invalid input. Choose again: ";
+    while (true) {
         cin >> choice;
+
+        if (handleInputError()) {//prüft, ob der Typ der eingabe gültig ist
+            continue;
+        }
+
+        if (choice < 1 || choice > characterCount) {
+            cout << "Invalid input. Choose again: ";
+            continue;
+        }
+
+        break;
     }
 
     return choice - 1;
@@ -189,4 +228,14 @@ void GameManager::showStatistics() const {
         << " | Losses: " << characters[i].getLoss()
         << endl;
     }
+}
+
+bool GameManager::handleInputError() const{
+    if (cin.fail()) {//prüft, ob der Typ geeignet ist
+        cin.clear();//die falsche Zustand reparieren
+        cin.ignore(1000, '\n');//die falsche Eingabe max. 1000 Zeichen wegschmeißen, bis zum "\n".
+        cout << "Invalid input. Please enter a number: ";
+        return true;
+    }
+    return false;
 }

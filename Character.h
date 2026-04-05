@@ -24,14 +24,12 @@ public:
     Skill* getSkill(int index) const;//skills[index]
     int getHp() const;
     int getMaxHp() const;
-
-
     int getWin() const;
     int getLoss() const;
 
+
     void takeDamage(int amount);
     void heal(int amount);
-
 
     bool isAlive() const;
     void addWin();

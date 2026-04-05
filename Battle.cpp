@@ -37,6 +37,9 @@ Character* Battle::getWinner() const {
 
 
 void Battle::executeTurn() {
+    if (player1 == nullptr || player2 == nullptr) {
+        return;
+    }
     Character* attacker;
     Character* defender;
 
@@ -48,17 +51,28 @@ void Battle::executeTurn() {
         defender = player1;
     }
     cout << "\n" << attacker->getName() << "'s turn." << endl;
-    cout << "Choose skill (1 or 2): ";
     cout << "\n1. " << attacker->getSkill(0)->getName();
     cout << "\n2. " << attacker->getSkill(1)->getName() << endl;
 
     int choice;
     cout << "Choose skill (1 or 2): ";
-    cin >> choice;
 
-    while (choice != 1 && choice != 2) {
-        cout << "\nInvalid choice. Please enter 1 or 2: ";
+    while (true) {
         cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Invalid input. Choose again: ";
+            continue;
+        }
+
+        if (choice != 1 && choice != 2) {
+            cout << "\nInvalid choice. Please enter 1 or 2: ";
+            continue;
+        }
+
+        break;
     }
 
     Skill* skill = attacker->getSkill(choice - 1);
