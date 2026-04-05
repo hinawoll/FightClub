@@ -9,9 +9,6 @@ private:
     Character* player2;
     int currentTurn;
 
-    bool player1UsedFireball;
-    bool player2UsedFireball;
-
 public:
     //Constructor
     Battle(Character* p1, Character* p2);

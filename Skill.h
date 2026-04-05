@@ -2,21 +2,25 @@
 #define FIGHTCLUB_SKILL_H
 #include <string>
 
-class Character;//foward declaration 型の存在だけ知ってたらいいので、これでいい
-// #include "Character.h" ←Characterの中身まで必要な場合
+class Character;//declarieren: "die Klasse Character existiert- (Details kommen später)"
 
-class Skill {
-protected:
+class Skill {//←abstrakte Klasse
+protected://zugreifbar innerhalb der eigenen Klasse und vererbte Klasse
     std::string name;
-    int damage;
 
 public:
-    Skill();
-    Skill(std::string name, int damage);//Constructor
+    //Constructor
+    Skill(std::string name);
 
-    std::string getName() const;//const:「この関数はオブジェクトの中身を変更しません」という宣言。間違って変更するのを防げる
-    int getDamage() const;
-    void use(Character& opponent) const;//&がないとCharacterがコピーされるかも。でも本物にダメージを与えたいから&を使う|const:「skill自身は変わらない」
+    //getter
+    std::string getName() const;//const:diese Funktion ändert die Inhalte der Objekt nicht
+
+    //reine virtuelle Funktion 純粋仮想関数
+    //der Inhalt dieser Funktion muss in der Kindklasse geschrieben werden
+    virtual void use(Character& user, Character& opponent) const = 0;
+
+    //destructor
+    virtual ~Skill() {}
 };
 
 

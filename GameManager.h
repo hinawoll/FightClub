@@ -8,7 +8,7 @@ class GameManager {
 private:
     Character characters[10];
     int characterCount;
-    Skill availableSkills[5];
+    Skill* availableSkills[5];
     int skillCount;
 
 public:
@@ -16,12 +16,13 @@ public:
 
     void startGame( );
     void showMenu() const;
-    Character createCharacter();
+    void createCharacter();
     void setupDefaultSkills();
     void setupDefaultCharacters();
     int selectCharacter() const;
     void startBattle();
-    void showResult();
+    void showAllCharacters() const;
+    void showStatistics() const;
 };
 
 

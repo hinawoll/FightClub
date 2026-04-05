@@ -1,5 +1,6 @@
 #include "Battle.h"
 #include "Character.h"
+#include "Skill.h"
 #include <iostream>
 using namespace std;
 
@@ -8,8 +9,6 @@ Battle::Battle(Character* p1, Character* p2) {
     this->player1 = p1;
     this->player2 = p2;
     this->currentTurn = 1;
-    this->player1UsedFireball = false;
-    this->player2UsedFireball = false;
 }
 
 //prüft, ob jemand schon tod ist
@@ -40,24 +39,21 @@ Character* Battle::getWinner() const {
 void Battle::executeTurn() {
     Character* attacker;
     Character* defender;
-    bool* usedFireball;//コピーではなく元のplayer1UsedFireballあるいはplayer2UsedFireballの値を操作するためにポインタ
 
     if (currentTurn == 1) {
         attacker = player1;
         defender = player2;
-        usedFireball = &player1UsedFireball;
     } else {
         attacker = player2;
         defender = player1;
-        usedFireball = &player2UsedFireball;
     }
-    cout << attacker->getName() << "'s turn." << endl;
+    cout << "\n" << attacker->getName() << "'s turn." << endl;
     cout << "Choose skill (1 or 2): ";
-    cout << "\n1. " << attacker->getSkill(0).getName() << " (Damage: " << attacker->getSkill(0).getDamage() << ")";
-    cout << "\n2. " << attacker->getSkill(1).getName() << " (Damage: " << attacker->getSkill(1).getDamage() << ")" << endl;
+    cout << "\n1. " << attacker->getSkill(0)->getName();
+    cout << "\n2. " << attacker->getSkill(1)->getName() << endl;
 
     int choice;
-    cout << "\nChoose skill (1 or 2): ";
+    cout << "Choose skill (1 or 2): ";
     cin >> choice;
 
     while (choice != 1 && choice != 2) {
@@ -65,29 +61,14 @@ void Battle::executeTurn() {
         cin >> choice;
     }
 
-    Skill skill = attacker->getSkill(choice - 1);
+    Skill* skill = attacker->getSkill(choice - 1);
 
-    // Fireball ist nur einmal verwendet werden
-    while (skill.getName() == "Fireball" && *usedFireball == true) {
-        cout << "Fireball can only be used once per battle." << endl;
-        cout << "Choose another skill (1 or 2): ";
-        cin >> choice;
 
-        while (choice != 1 && choice != 2) {
-            cout << "Invalid choice. Please enter 1 or 2: ";
-            cin >> choice;
-        }
+    cout << attacker->getName() << " uses " << skill->getName() << "!" << endl;
 
-        skill = attacker->getSkill(choice - 1);
-    }
-    cout << attacker->getName() << " uses " << skill.getName() << "!" << endl;
+    skill->use(*attacker, *defender);
 
-    skill.use(*defender);
-
-    if (skill.getName() == "Fireball") {
-        *usedFireball = true;
-    }
-
+    cout << attacker->getName() << " HP: " << attacker->getHp() << endl;
     cout << defender->getName() << " HP: " << defender->getHp() << endl;
 
     //Runde wechseln
@@ -103,7 +84,7 @@ void Battle::startBattle() {
         std::cout << "Battle konnte nicht gestartet werden.\n";
         return;
     }
-    cout << "Battle starts: " << player1->getName() << " vs " << player2->getName() << endl;
+    cout << "\nBattle starts: " << player1->getName() << " vs " << player2->getName() << endl;
 
     while (!isBattleOver()) {
         executeTurn();

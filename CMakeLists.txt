@@ -11,4 +11,8 @@ add_executable(FightClub main.cpp
         Battle.cpp
         Battle.h
         GameManager.cpp
-        GameManager.h)
+        GameManager.h
+        AttackSkill.cpp
+        AttackSkill.h
+        HealSkill.cpp
+        HealSkill.h)

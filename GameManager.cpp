@@ -1,6 +1,9 @@
 #include "GameManager.h"
 #include <iostream>
+
+#include "AttackSkill.h"
 #include "Battle.h"
+#include "HealSkill.h"
 
 using namespace std;
 
@@ -13,7 +16,6 @@ GameManager::GameManager(){
 
 void GameManager::startGame() {
     int choice = 0;
-
     while (choice != 5) {
         showMenu();
         cin >> choice;
@@ -27,15 +29,11 @@ void GameManager::startGame() {
             if (characterCount >= 10) {
                 cout << "Character list is full.\n";
             } else {
-                characters[characterCount] = createCharacter();
-                characterCount++;
-                cout << "Character created successfully.\n";
+                createCharacter();
             }
         }
         else if (choice == 2) {
-            for (int i = 0; i < characterCount; i++) {
-                cout << i + 1 << ". " << characters[i].getName() << endl;
-            }
+            showAllCharacters();
         }
         else if (choice == 3) {
             if (characterCount < 2) {
@@ -45,7 +43,7 @@ void GameManager::startGame() {
             }
         }
         else if (choice == 4) {
-            showResult();
+            showStatistics();
         }
         else if (choice == 5) {
             cout << "Game closed.\n";
@@ -59,12 +57,12 @@ void GameManager::showMenu() const{
     cout << "1. Create character\n";
     cout << "2. Show all characters\n";
     cout << "3. Start battle\n";
-    cout << "4. Show results\n";
+    cout << "4. Show statistics\n";
     cout << "5. Exit\n";
     cout << "Choose: ";
 }
 
-Character GameManager::createCharacter() {
+void GameManager::createCharacter() {
     string name;
     int choice1, choice2;
 
@@ -74,7 +72,7 @@ Character GameManager::createCharacter() {
     // die Liste von Skills anzeigen
     cout << "\n--- Available Skills ---\n";
     for (int i = 0; i < skillCount; i++) {
-        cout << i + 1 << ". " << availableSkills[i].getName() << " (Damage: " << availableSkills[i].getDamage() << ")\n";
+        cout << i + 1 << ". " << availableSkills[i]->getName() << "\n";
     }
 
     // die erste Skill auswählen
@@ -96,25 +94,22 @@ Character GameManager::createCharacter() {
     }
 
     // ein Character erstellen
-    Character newCharacter(
+    characters[characterCount] = Character(
         name,
         availableSkills[choice1 - 1],
         availableSkills[choice2 - 1],
-        100,
-        0,
-        0
+        100
     );
 
-    return newCharacter;
+    characterCount++;
+    cout << "Character created successfully.\n";
 }
 
 
 int GameManager::selectCharacter() const{
     int choice;
 
-    for (int i = 0; i < characterCount; i++) {
-        cout << i + 1 << ". " << characters[i].getName() << endl;
-    }
+    showAllCharacters();
 
     cout << "Choose character: ";
     cin >> choice;
@@ -128,7 +123,7 @@ int GameManager::selectCharacter() const{
 }
 
 void GameManager::startBattle() {
-    cout << "\n--- Start Battle ---\n";
+    cout << "\n--- Battle Start ---\n";
 
     if (characterCount < 2) {
         cout << "Not enough characters.\n";
@@ -160,27 +155,38 @@ void GameManager::startBattle() {
 void GameManager::setupDefaultSkills() {
     skillCount = 0;
 
-    availableSkills[skillCount++] = Skill("Punch", 10);
-    availableSkills[skillCount++] = Skill("Kick", 12);
-    availableSkills[skillCount++] = Skill("Fireball", 15);
-    availableSkills[skillCount++] = Skill("Headbutt", 8);
+    availableSkills[skillCount++] = new AttackSkill("Punch", 10);
+    availableSkills[skillCount++] = new AttackSkill("Kick", 12);
+    availableSkills[skillCount++] = new AttackSkill("Fireball", 15);
+    availableSkills[skillCount++] = new HealSkill("Heal", 20);
 }
 
 void GameManager::setupDefaultCharacters() {
     characterCount = 0;
 
-    characters[characterCount++] =
-        Character("Knight", availableSkills[0], availableSkills[1], 100, 0, 0);
+    characters[characterCount++] =//[0]
+        Character("Knight", availableSkills[0], availableSkills[1], 100);
 
-    characters[characterCount++] =
-        Character("Mage", availableSkills[2], availableSkills[3], 100, 0, 0);
+    characters[characterCount++] =//[1]
+        Character("Wizard", availableSkills[2], availableSkills[3], 100);
+
+    characters[characterCount++] =//[2]
+        Character("Warrior", availableSkills[1], availableSkills[0], 100);
 }
 
+void GameManager::showAllCharacters() const {
+    cout << "\n--- Character List ---\n";
+    for (int i = 0; i < characterCount; i++) {
+        cout << i + 1 << ". " << characters[i].getName() << endl;
+    }
+}
 
-
-void GameManager::showResult() {
+void GameManager::showStatistics() const {
     cout << "\n--- Results ---\n";
     for (int i = 0; i < characterCount; i++) {
-        cout << characters[i].getName() << " | Wins: " << characters[i].getWin() << " | Losses: " << characters[i].getLoss() << endl;
+        cout << characters[i].getName()
+        << " | Wins: " << characters[i].getWin()
+        << " | Losses: " << characters[i].getLoss()
+        << endl;
     }
 }

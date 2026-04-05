@@ -8,25 +8,31 @@
 class Character {
 private:
     std::string name;
-    Skill skills[2];
+    Skill* skills[2];//Skillは抽象クラスで、インスタンス化できないから、ポインタを使う。ポインタなら、Skill型として扱うけど中身は子クラスでもOK。
     int hp;
+    int maxHp;
     int wins;
     int losses;
 
 public:
     //constructor
     Character();
-    Character(std::string name, Skill skills1, Skill skills2, int hp, int wins, int losses);
+    Character(std::string name, Skill* skill1, Skill* skill2, int hp);
 
     //getter
     std::string getName() const;
-    Skill getSkill(int index) const;//skills[index]
+    Skill* getSkill(int index) const;//skills[index]
     int getHp() const;
-    // int getMaxHp() const;
+    int getMaxHp() const;
+
+
     int getWin() const;
     int getLoss() const;
 
     void takeDamage(int amount);
+    void heal(int amount);
+
+
     bool isAlive() const;
     void addWin();
     void addLoss();
