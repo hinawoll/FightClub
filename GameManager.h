@@ -13,6 +13,7 @@ private:
 
 public:
     GameManager();
+    ~GameManager();
 
     void startGame( );
     void showMenu() const;

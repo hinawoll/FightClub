@@ -14,6 +14,14 @@ GameManager::GameManager(){
     setupDefaultCharacters();
 }
 
+//da ich in setupDefaultSkills() new verwende
+GameManager::~GameManager() {
+    for (int i = 0; i < skillCount; i++) {
+        delete availableSkills[i];
+        availableSkills[i] = nullptr;
+    }
+}
+
 void GameManager::startGame() {
     int choice = 0;
     while (choice != 5) {
@@ -129,7 +137,7 @@ void GameManager::createCharacter() {
         name,
         availableSkills[choice1 - 1],
         availableSkills[choice2 - 1],
-        100
+        30
     );
 
     characterCount++;
@@ -204,13 +212,13 @@ void GameManager::setupDefaultCharacters() {
     characterCount = 0;
 
     characters[characterCount++] =//[0]
-        Character("Knight", availableSkills[0], availableSkills[1], 100);
+        Character("Knight", availableSkills[0], availableSkills[1], 30);
 
     characters[characterCount++] =//[1]
-        Character("Wizard", availableSkills[2], availableSkills[3], 100);
+        Character("Wizard", availableSkills[2], availableSkills[3], 30);
 
     characters[characterCount++] =//[2]
-        Character("Warrior", availableSkills[1], availableSkills[0], 100);
+        Character("Warrior", availableSkills[1], availableSkills[0], 30);
 }
 
 void GameManager::showAllCharacters() const {
