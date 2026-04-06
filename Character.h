@@ -26,15 +26,15 @@ public:
     int getMaxHp() const;
     int getWin() const;
     int getLoss() const;
+    //setter
+    void setHp(int hp);
 
 
     void takeDamage(int amount);
     void heal(int amount);
-
     bool isAlive() const;
     void addWin();
     void addLoss();
-
     void resetHp();
 
 };

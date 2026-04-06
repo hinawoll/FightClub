@@ -209,7 +209,7 @@ void GameManager::setupDefaultSkills() {
     availableSkills[skillCount++] = new AttackSkill("Punch", 10);
     availableSkills[skillCount++] = new AttackSkill("Kick", 12);
     availableSkills[skillCount++] = new AttackSkill("Fireball", 15);
-    availableSkills[skillCount++] = new HealSkill("Heal", 20);
+    availableSkills[skillCount++] = new HealSkill("Heal", 8);
 }
 
 void GameManager::setupDefaultCharacters() {

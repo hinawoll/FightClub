@@ -45,26 +45,29 @@ int Character::getLoss() const {
     return losses;
 }
 
-void Character::takeDamage(int amount) {//amount:どのくらいダメージを受けるか
+//setter
+void Character::setHp(int hp) {
+    if (hp < 0) {
+        this->hp = 0;
+    } else if (hp > maxHp) {
+        this->hp = maxHp;
+    } else {
+        this->hp = hp;
+    }
+}
+
+
+void Character::takeDamage(int amount) {//amount of Attackskill
     if (amount < 0) {// <= ist auch moeglich
         return;
     }
-    hp -= amount;
-    if (hp < 0) {
-        hp = 0;
-    }
+    setHp(hp - amount);
 }
 void Character::heal(int amount) {
     if (amount < 0) {
         return;
     }
-
-    hp += amount;
-
-    //damit hp maxHp nicht überschreitet
-    if (hp > maxHp) {
-        hp = maxHp;
-    }
+    setHp(hp + amount);
 }
 bool Character::isAlive() const{
     if (hp > 0) {
