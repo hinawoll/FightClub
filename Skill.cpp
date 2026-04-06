@@ -10,3 +10,6 @@ std::string Skill::getName() const {
     return name;
 }
 
+
+Skill::~Skill() {}
+

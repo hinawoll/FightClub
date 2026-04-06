@@ -11,7 +11,10 @@ private:
 public:
     HealSkill(std::string name, int heal);
 
-    void use(Character& user, Character& opponent) const override;
+    void use(Character& user, Character& opponent) const override;//override: der Inhalt dieser Funktion wird in der Kindklasse geschrieben
+
+    std::string getDescription() const override;
+
 };
 
 

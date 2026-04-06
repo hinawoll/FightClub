@@ -17,6 +17,7 @@ public:
     void executeTurn();
     bool isBattleOver() const;
     Character* getWinner() const;
+    void showHp() const;
 };
 
 

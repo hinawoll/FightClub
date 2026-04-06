@@ -89,7 +89,11 @@ void GameManager::createCharacter() {
     // die Liste von Skills anzeigen
     cout << "\n--- Available Skills ---\n";
     for (int i = 0; i < skillCount; i++) {
-        cout << i + 1 << ". " << availableSkills[i]->getName() << "\n";
+        cout << i + 1 << ". "
+        << availableSkills[i]->getName()
+        << " - "
+        << availableSkills[i]->getDescription()
+        << endl;
     }
 
     // die erste Skill auswählen
@@ -218,13 +222,28 @@ void GameManager::setupDefaultCharacters() {
         Character("Wizard", availableSkills[2], availableSkills[3], 30);
 
     characters[characterCount++] =//[2]
-        Character("Warrior", availableSkills[1], availableSkills[0], 30);
+        Character("Dwarf", availableSkills[1], availableSkills[0], 30);
 }
 
 void GameManager::showAllCharacters() const {
     cout << "\n--- Character List ---\n";
     for (int i = 0; i < characterCount; i++) {
-        cout << i + 1 << ". " << characters[i].getName() << endl;
+        cout << i + 1 << ". " << characters[i].getName();
+        cout << " | Skills: ";
+
+        for (int j = 0; j < 2; j++) {//2: jeder Charakter hat zwei Skills
+            if (characters[i].getSkill(j) != nullptr) {
+                cout << characters[i].getSkill(j)->getName();
+            } else {
+                cout << "None";
+            }
+
+            if (j < 1) {//"," kommt nach dem ersten Skill
+                cout << ", ";
+            }
+        }
+
+        cout << endl;
     }
 }
 

@@ -50,9 +50,22 @@ void Battle::executeTurn() {
         attacker = player2;
         defender = player1;
     }
-    cout << "\n" << attacker->getName() << "'s turn." << endl;
-    cout << "\n1. " << attacker->getSkill(0)->getName();
-    cout << "\n2. " << attacker->getSkill(1)->getName() << endl;
+
+    cout << "\n--------------------" << endl;
+    cout << attacker->getName() << "'s turn." << endl;
+    showHp();
+
+    for (int i = 0; i < 2; i++) {
+        if (attacker->getSkill(i) != nullptr) {
+            cout << i + 1 << ". "
+                 << attacker->getSkill(i)->getName()
+                 << " - "
+                 << attacker->getSkill(i)->getDescription()
+                 << endl;
+        } else {
+            cout << i + 1 << ". None" << endl;
+        }
+    }
 
     int choice;
     cout << "Choose skill (1 or 2): ";
@@ -82,8 +95,7 @@ void Battle::executeTurn() {
 
     skill->use(*attacker, *defender);
 
-    cout << attacker->getName() << " HP: " << attacker->getHp() << endl;
-    cout << defender->getName() << " HP: " << defender->getHp() << endl;
+    showHp();
 
     //Runde wechseln
     if (currentTurn == 1) {
@@ -117,6 +129,11 @@ void Battle::startBattle() {
         cout << "Winner: " << winner->getName() << endl;
     }
 
+}
+
+void Battle::showHp() const{
+    cout << player1->getName() << " HP: " << player1->getHp() << endl;
+    cout << player2->getName() << " HP: " << player2->getHp() << endl;
 }
 
 

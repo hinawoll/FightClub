@@ -11,6 +11,8 @@ protected://zugreifbar innerhalb der eigenen Klasse und vererbte Klasse
 public:
     //Constructor
     Skill(std::string name);
+    //destructor
+    virtual ~Skill();
 
     //getter
     std::string getName() const;//const:diese Funktion ändert die Inhalte der Objekt nicht
@@ -19,8 +21,7 @@ public:
     //der Inhalt dieser Funktion muss in der Kindklasse geschrieben werden
     virtual void use(Character& user, Character& opponent) const = 0;
 
-    //destructor
-    virtual ~Skill() {}
+    virtual std::string getDescription() const = 0;
 };
 
 
